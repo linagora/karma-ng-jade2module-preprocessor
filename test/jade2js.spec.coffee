@@ -1,4 +1,4 @@
-describe 'preprocessors html2js', ->
+describe 'preprocessor jade2js', ->
   chai = require('chai')
 
   templateHelpers = require('./helpers/template_cache')
@@ -6,7 +6,7 @@ describe 'preprocessors html2js', ->
 
   expect = chai.expect
 
-  html2js = require '../lib/html2js'
+  jade2js = require '../lib/jade2js'
   logger = create: -> {debug: ->}
   process = null
 
@@ -19,16 +19,17 @@ describe 'preprocessors html2js', ->
     @isUrl = false
 
   createPreprocessor = (config = {}) ->
-    html2js logger, '/base', config
+    jade2js logger, '/base', config
 
   beforeEach ->
     process = createPreprocessor()
 
-  it 'should convert html to js code', (done) ->
-    file = new File '/base/path/file.html'
+  it 'should convert jade to js code', (done) ->
+    file = new File '/base/path/file.jade'
+    JADE = 'html test me!'
     HTML = '<html>test me!</html>'
 
-    process HTML, file, (processedContent) ->
+    process JADE, file, (processedContent) ->
       expect(processedContent)
         .to.defineModule('path/file.html').and
         .to.defineTemplateId('path/file.html').and
@@ -37,17 +38,17 @@ describe 'preprocessors html2js', ->
 
 
   it 'should change path to *.js', (done) ->
-    file = new File '/base/path/file.html'
+    file = new File '/base/path/file.jade'
 
     process '', file, (processedContent) ->
-      expect(file.path).to.equal '/base/path/file.html.js'
+      expect(file.path).to.equal '/base/path/file.html'
       done()
 
 
   it 'should preserve new lines', (done) ->
-    file = new File '/base/path/file.html'
+    file = new File '/base/path/file.jade'
 
-    process 'first\nsecond', file, (processedContent) ->
+    process '| first\n| second', file, (processedContent) ->
       expect(processedContent)
         .to.defineModule('path/file.html').and
         .to.defineTemplateId('path/file.html').and
@@ -56,7 +57,7 @@ describe 'preprocessors html2js', ->
 
 
   it 'should preserve Windows new lines', (done) ->
-    file = new File '/base/path/file.html'
+    file = new File '/base/path/file.jade'
 
     process 'first\r\nsecond', file, (processedContent) ->
       expect(processedContent).to.not.contain '\r'
@@ -64,9 +65,9 @@ describe 'preprocessors html2js', ->
 
 
   it 'should preserve the backslash character', (done) ->
-    file = new File '/base/path/file.html'
+    file = new File '/base/path/file.jade'
 
-    process 'first\\second', file, (processedContent) ->
+    process '| first\\second', file, (processedContent) ->
       expect(processedContent)
         .to.defineModule('path/file.html').and
         .to.defineTemplateId('path/file.html').and
@@ -81,10 +82,11 @@ describe 'preprocessors html2js', ->
 
 
       it 'strips the given prefix from the file path', (done) ->
-        file = new File '/base/path/file.html'
+        file = new File '/base/path/file.jade'
+        JADE = 'html'
         HTML = '<html></html>'
 
-        process HTML, file, (processedContent) ->
+        process JADE, file, (processedContent) ->
           expect(processedContent)
             .to.defineModule('file.html').and
             .to.defineTemplateId('file.html').and
@@ -98,10 +100,11 @@ describe 'preprocessors html2js', ->
 
 
       it 'prepends the given prefix from the file path', (done) ->
-        file = new File '/base/path/file.html'
+        file = new File '/base/path/file.jade'
+        JADE = 'html'
         HTML = '<html></html>'
 
-        process HTML, file, (processedContent) ->
+        process JADE, file, (processedContent) ->
           expect(processedContent)
             .to.defineModule('served/path/file.html').and
             .to.defineTemplateId('served/path/file.html').and
@@ -116,13 +119,14 @@ describe 'preprocessors html2js', ->
 
 
       it 'invokes custom transform function', (done) ->
-        file = new File '/base/path/file.html'
+        file = new File '/base/path/file.jade'
+        JADE = 'html'
         HTML = '<html></html>'
 
-        process HTML, file, (processedContent) ->
+        process JADE, file, (processedContent) ->
           expect(processedContent)
-            .to.defineModule('generated_id_for/path/file.html').and
-            .to.defineTemplateId('generated_id_for/path/file.html').and
+            .to.defineModule('generated_id_for/path/file.jade').and
+            .to.defineTemplateId('generated_id_for/path/file.jade').and
             .to.haveContent HTML
           done()
 
@@ -132,16 +136,18 @@ describe 'preprocessors html2js', ->
           moduleName: 'foo'
 
       it 'should generate code with a given module name', ->
-        file1 = new File '/base/tpl/one.html'
+        file1 = new File '/base/tpl/one.jade'
+        JADE1 = 'span one'
         HTML1 = '<span>one</span>'
-        file2 = new File '/base/tpl/two.html'
+        file2 = new File '/base/tpl/two.jade'
+        JADE2 = 'span two'
         HTML2 = '<span>two</span>'
         bothFilesContent = ''
 
-        process HTML1, file1, (processedContent) ->
+        process JADE1, file1, (processedContent) ->
           bothFilesContent += processedContent
 
-        process HTML2, file2, (processedContent) ->
+        process JADE2, file2, (processedContent) ->
           bothFilesContent += processedContent
 
         # evaluate both files (to simulate multiple files in the browser)
