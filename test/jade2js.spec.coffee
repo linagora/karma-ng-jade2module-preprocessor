@@ -157,3 +157,18 @@ describe 'preprocessor jade2js', ->
           .to.haveContent(HTML1).and
           .to.defineTemplateId('tpl/two.html').and
           .to.haveContent(HTML2)
+
+    describe 'jadeRenderConfig', ->
+      beforeEach ->
+        process = createPreprocessor
+          jadeRenderConfig: (str) -> str
+
+      it 'should strip module references (e.g. i18n-node)', (done) ->
+        file = new File '/base/path/file.jade'
+
+        process 'div #{__("Test")}', file, (processedContent) ->
+          expect(processedContent)
+            .to.defineModule('path/file.html').and
+            .to.defineTemplateId('path/file.html').and
+            .to.haveContent '<div>Test</div>'
+          done()
