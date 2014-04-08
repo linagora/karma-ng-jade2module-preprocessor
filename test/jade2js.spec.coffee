@@ -161,12 +161,13 @@ describe 'preprocessor jade2js', ->
     describe 'jadeRenderConfig', ->
       beforeEach ->
         process = createPreprocessor
-          jadeRenderConfig: (str) -> str
+          jadeRenderConfig:
+            key: (str) -> str
 
-      it 'should strip module references (e.g. i18n-node)', (done) ->
+      it 'should strip references identified by a specific key', (done) ->
         file = new File '/base/path/file.jade'
 
-        process 'div #{__("Test")}', file, (processedContent) ->
+        process 'div #{key("Test")}', file, (processedContent) ->
           expect(processedContent)
             .to.defineModule('path/file.html').and
             .to.defineTemplateId('path/file.html').and
