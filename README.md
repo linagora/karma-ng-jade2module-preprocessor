@@ -45,6 +45,12 @@ module.exports = function(config) {
       cacheIdFromPath: function(filepath) {
         return cacheId;
       },
+      
+      // define a function that strip references identified by specific keys
+      jadeRenderConfig : {
+        key1: function(str){...},
+        key2: function(str){...}
+      },
 
       // setting this option will create only a single module that contains templates
       // from all the files, so you can load them all with module('foo')
