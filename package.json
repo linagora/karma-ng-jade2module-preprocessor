@@ -1,6 +1,6 @@
 {
-  "name": "karma-ng-jade2js-preprocessor",
-  "version": "0.0.1",
+  "name": "karma-ng-jade2module-preprocessor",
+  "version": "0.5.0",
   "description": "A Karma plugin. Compile AngularJS templates to JavaScript on the fly.",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/karma-runner/karma-ng-jade2js-preprocessor.git"
+    "url": "git://github.com/linagora/karma-ng-jade2module-preprocessor.git"
   },
   "keywords": [
     "karma-plugin",
@@ -17,7 +17,7 @@
     "angular",
     "jade2js"
   ],
-  "author": "Julien Biezemans <jb@jbpros.com>",
+  "author": "Linagora folks !!! <mbailly@linagora.com>",
   "dependencies": {
     "jade": "0.35.0"
   },
@@ -32,7 +32,7 @@
     "grunt-auto-release": "~0.0.2"
   },
   "peerDependencies": {
-    "karma": ">=0.9"
+    "karma": ">=0.10"
   },
   "license": "MIT",
   "contributors": [
@@ -42,6 +42,7 @@
     "Robin Roestenburg <robin@roestenburg.io>",
     "Lucas Galfasó <lgalfaso@gmail.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
-    "BrianLenzo <brian.lenzo@gmail.com>"
+    "BrianLenzo <brian.lenzo@gmail.com>",
+    "Julien Biezemans <jb@jbpros.com>"
   ]
 }

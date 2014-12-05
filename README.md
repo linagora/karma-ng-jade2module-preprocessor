@@ -1,24 +1,24 @@
-# karma-ng-html2js-preprocessor [![Build Status](https://travis-ci.org/karma-runner/karma-ng-html2js-preprocessor.png?branch=master)](https://travis-ci.org/karma-runner/karma-ng-html2js-preprocessor)
+# karma-ng-jade2module-preprocessor
 
-> Preprocessor for converting HTML files to [AngularJS](http://angularjs.org/) templates.
+> Preprocessor for converting Jade template files to [AngularJS](http://angularjs.org/) templates.
 
 *Note:* If you are looking for a general preprocessor that is not tight to Angular, check out [karma-html2js-preprocessor](https://github.com/karma-runner/karma-html2js-preprocessor).
 
 ## Installation
 
-The easiest way is to keep `karma-ng-html2js-preprocessor` as a devDependency in your `package.json`.
+The easiest way is to keep `karma-ng-jade2module-preprocessor` as a devDependency in your `package.json`.
 ```json
 {
   "devDependencies": {
-    "karma": "~0.10",
-    "karma-ng-html2js-preprocessor": "~0.1"
+    "karma": "~0.12",
+    "karma-ng-jade2module-preprocessor": "~0.5"
   }
 }
 ```
 
 You can simple do it by:
 ```bash
-npm install karma-ng-html2js-preprocessor --save-dev
+npm install karma-ng-html2module-preprocessor --save-dev
 ```
 
 ## Configuration
@@ -27,7 +27,7 @@ npm install karma-ng-html2js-preprocessor --save-dev
 module.exports = function(config) {
   config.set({
     preprocessors: {
-      '**/*.html': ['ng-html2js']
+      '**/*.jade': ['ng-jade2module']
     },
 
     files: [
@@ -35,21 +35,22 @@ module.exports = function(config) {
       '*.html'
     ],
 
-    ngHtml2JsPreprocessor: {
+    ngJade2ModulePreprocessor: {
       // strip this from the file path
       stripPrefix: 'public/',
-      // prepend this to the
+      // prepend this to the file path
       prependPrefix: 'served/',
 
       // or define a custom transform function
       cacheIdFromPath: function(filepath) {
         return cacheId;
       },
-      
-      // define a function that strip references identified by specific keys
+
+      // the configuration options that will be sent to jade render() method, eg:
       jadeRenderConfig : {
-        key1: function(str){...},
-        key2: function(str){...}
+        __: function(str) {
+          return str;
+        }
       },
 
       // setting this option will create only a single module that contains templates
@@ -62,20 +63,34 @@ module.exports = function(config) {
 
 ## How does it work ?
 
-This preprocessor converts HTML files into JS strings and generates Angular modules. These modules, when loaded, puts these HTML files into the `$templateCache` and therefore Angular won't try to fetch them from the server.
+This preprocessor converts Jade file into HTML files, and then into JS strings and generates Angular modules. These modules, when loaded, puts these HTML files into the `$templateCache` and therefore Angular won't try to fetch them from the server.
 
-For instance this `template.html`...
-```html
-<div>something</div>
+For instance this `template.jade`...
+```jade
+div something
 ```
-... will be served as `template.html.js`:
+... will be served as `template.html`. The underlaying code does a:
 ```js
-angular.module('template.html', []).config(function($templateCache) {
+angular.module('foo', []).config(function($templateCache) {
   $templateCache.put('template.html', '<div>something</div>');
 });
 ```
 
-See the [ng-directive-testing](https://github.com/vojtajina/ng-directive-testing) for a complete example.
+(foo comes from the *moduleName* configuration property).
+
+So testing a directive that is declared like:
+
+```js
+angular.module('example')
+.directive('exampleDirective', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'template.html'
+  };
+})
+```
+
+will have the `template.jade` injected !
 
 ----
 
