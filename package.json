@@ -19,7 +19,8 @@
   ],
   "author": "Linagora folks !!! <mbailly@linagora.com>",
   "dependencies": {
-    "jade": "0.35.0"
+    "jade": "0.35.0",
+    "lodash": "^4.16.4"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
