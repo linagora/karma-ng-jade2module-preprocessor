@@ -37,14 +37,6 @@ describe 'preprocessor jade2js', ->
       done()
 
 
-  it 'should change path to *.js', (done) ->
-    file = new File '/base/path/file.jade'
-
-    process '', file, (processedContent) ->
-      expect(file.path).to.equal '/base/path/file.html'
-      done()
-
-
   it 'should preserve new lines', (done) ->
     file = new File '/base/path/file.jade'
 
@@ -172,4 +164,36 @@ describe 'preprocessor jade2js', ->
             .to.defineModule('path/file.html').and
             .to.defineTemplateId('path/file.html').and
             .to.haveContent '<div>Test</div>'
+          done()
+
+    describe 'jadeRenderLocals', ->
+      beforeEach ->
+        process = createPreprocessor
+          jadeRenderLocals:
+            key: (str) -> str
+
+      it 'should provide key as local', (done) ->
+        file = new File '/base/path/file.jade'
+
+        process 'div #{key("Test")}', file, (processedContent) ->
+          expect(processedContent)
+            .to.defineModule('path/file.html').and
+            .to.defineTemplateId('path/file.html').and
+            .to.haveContent '<div>Test</div>'
+          done()
+
+    describe 'jadeRenderOptions', ->
+      beforeEach ->
+        process = createPreprocessor
+          jadeRenderOptions:
+            pretty: 'x'
+
+      it 'should support pretty option', (done) ->
+        file = new File '/base/path/file.jade'
+
+        process 'div\n\tp Test', file, (processedContent) ->
+          expect(processedContent)
+            .to.defineModule('path/file.html').and
+            .to.defineTemplateId('path/file.html').and
+            .to.haveContent '\n<div>\n  <p>Test</p>\n</div>'
           done()

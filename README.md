@@ -46,8 +46,21 @@ module.exports = function(config) {
         return cacheId;
       },
 
-      // the configuration options that will be sent to jade render() method, eg:
-      jadeRenderConfig : {
+      // the locals object, eg:
+      jadeRenderLocals: {
+        __: function(str) {
+          return str;
+        }
+      },
+
+      // the configuration options that will be sent to jade render() method,
+      // see Options section bellow, eg:
+      jadeRenderOptions: {
+        pretty: true
+      },
+
+      // DEPRECATED: the locals object, eg:
+      jadeRenderConfig: {
         __: function(str) {
           return str;
         }
