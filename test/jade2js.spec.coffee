@@ -181,19 +181,3 @@ describe 'preprocessor jade2js', ->
             .to.defineTemplateId('path/file.html').and
             .to.haveContent '<div>Test</div>'
           done()
-
-    describe 'jadeRenderOptions', ->
-      beforeEach ->
-        process = createPreprocessor
-          jadeRenderOptions:
-            pretty: '  '
-
-      it 'should support pretty option', (done) ->
-        file = new File '/base/path/file.pug'
-
-        process 'div\n\tp Test', file, (processedContent) ->
-          expect(processedContent)
-            .to.defineModule('path/file.html').and
-            .to.defineTemplateId('path/file.html').and
-            .to.haveContent '\n<div>\n  <p>Test</p>\n</div>'
-          done()
