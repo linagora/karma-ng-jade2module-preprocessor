@@ -24,8 +24,8 @@ describe 'preprocessor jade2js', ->
   beforeEach ->
     process = createPreprocessor()
 
-  it 'should convert jade to js code', (done) ->
-    file = new File '/base/path/file.jade'
+  it 'should convert pug to js code', (done) ->
+    file = new File '/base/path/file.pug'
     JADE = 'html test me!'
     HTML = '<html>test me!</html>'
 
@@ -38,7 +38,7 @@ describe 'preprocessor jade2js', ->
 
 
   it 'should preserve new lines', (done) ->
-    file = new File '/base/path/file.jade'
+    file = new File '/base/path/file.pug'
 
     process '| first\n| second', file, (processedContent) ->
       expect(processedContent)
@@ -49,7 +49,7 @@ describe 'preprocessor jade2js', ->
 
 
   it 'should preserve Windows new lines', (done) ->
-    file = new File '/base/path/file.jade'
+    file = new File '/base/path/file.pug'
 
     process 'first\r\nsecond', file, (processedContent) ->
       expect(processedContent).to.not.contain '\r'
@@ -57,7 +57,7 @@ describe 'preprocessor jade2js', ->
 
 
   it 'should preserve the backslash character', (done) ->
-    file = new File '/base/path/file.jade'
+    file = new File '/base/path/file.pug'
 
     process '| first\\second', file, (processedContent) ->
       expect(processedContent)
@@ -74,7 +74,7 @@ describe 'preprocessor jade2js', ->
 
 
       it 'strips the given prefix from the file path', (done) ->
-        file = new File '/base/path/file.jade'
+        file = new File '/base/path/file.pug'
         JADE = 'html'
         HTML = '<html></html>'
 
@@ -92,7 +92,7 @@ describe 'preprocessor jade2js', ->
 
 
       it 'prepends the given prefix from the file path', (done) ->
-        file = new File '/base/path/file.jade'
+        file = new File '/base/path/file.pug'
         JADE = 'html'
         HTML = '<html></html>'
 
@@ -111,14 +111,14 @@ describe 'preprocessor jade2js', ->
 
 
       it 'invokes custom transform function', (done) ->
-        file = new File '/base/path/file.jade'
+        file = new File '/base/path/file.pug'
         JADE = 'html'
         HTML = '<html></html>'
 
         process JADE, file, (processedContent) ->
           expect(processedContent)
-            .to.defineModule('generated_id_for/path/file.jade').and
-            .to.defineTemplateId('generated_id_for/path/file.jade').and
+            .to.defineModule('generated_id_for/path/file.pug').and
+            .to.defineTemplateId('generated_id_for/path/file.pug').and
             .to.haveContent HTML
           done()
 
@@ -128,10 +128,10 @@ describe 'preprocessor jade2js', ->
           moduleName: 'foo'
 
       it 'should generate code with a given module name', ->
-        file1 = new File '/base/tpl/one.jade'
+        file1 = new File '/base/tpl/one.pug'
         JADE1 = 'span one'
         HTML1 = '<span>one</span>'
-        file2 = new File '/base/tpl/two.jade'
+        file2 = new File '/base/tpl/two.pug'
         JADE2 = 'span two'
         HTML2 = '<span>two</span>'
         bothFilesContent = ''
@@ -157,7 +157,7 @@ describe 'preprocessor jade2js', ->
             key: (str) -> str
 
       it 'should strip references identified by a specific key', (done) ->
-        file = new File '/base/path/file.jade'
+        file = new File '/base/path/file.pug'
 
         process 'div #{key("Test")}', file, (processedContent) ->
           expect(processedContent)
@@ -173,27 +173,11 @@ describe 'preprocessor jade2js', ->
             key: (str) -> str
 
       it 'should provide key as local', (done) ->
-        file = new File '/base/path/file.jade'
+        file = new File '/base/path/file.pug'
 
         process 'div #{key("Test")}', file, (processedContent) ->
           expect(processedContent)
             .to.defineModule('path/file.html').and
             .to.defineTemplateId('path/file.html').and
             .to.haveContent '<div>Test</div>'
-          done()
-
-    describe 'jadeRenderOptions', ->
-      beforeEach ->
-        process = createPreprocessor
-          jadeRenderOptions:
-            pretty: 'x'
-
-      it 'should support pretty option', (done) ->
-        file = new File '/base/path/file.jade'
-
-        process 'div\n\tp Test', file, (processedContent) ->
-          expect(processedContent)
-            .to.defineModule('path/file.html').and
-            .to.defineTemplateId('path/file.html').and
-            .to.haveContent '\n<div>\n  <p>Test</p>\n</div>'
           done()
