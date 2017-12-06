@@ -18,7 +18,7 @@ The easiest way is to keep `karma-ng-jade2module-preprocessor` as a devDependenc
 
 You can simple do it by:
 ```bash
-npm install karma-ng-html2module-preprocessor --save-dev
+npm install karma-ng-jade2module-preprocessor --save-dev
 ```
 
 ## Configuration
