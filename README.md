@@ -6,19 +6,19 @@
 
 ## Installation
 
-The easiest way is to keep `karma-ng-jade2module-preprocessor` as a devDependency in your `package.json`.
+The easiest way is to keep `@linagora/karma-ng-jade2module-preprocessor` as a devDependency in your `package.json`.
 ```json
 {
   "devDependencies": {
     "karma": "~0.12",
-    "karma-ng-jade2module-preprocessor": "~0.5"
+    "@linagora/karma-ng-jade2module-preprocessor": "~0.5"
   }
 }
 ```
 
 You can simple do it by:
 ```bash
-npm install karma-ng-jade2module-preprocessor --save-dev
+npm install @linagora/karma-ng-jade2module-preprocessor --save-dev
 ```
 
 ## Configuration
