@@ -1,6 +1,6 @@
 {
-  "name": "karma-ng-jade2module-preprocessor",
-  "version": "0.5.2",
+  "name": "@linagora/karma-ng-jade2module-preprocessor",
+  "version": "0.5.3",
   "description": "A Karma plugin. Compile AngularJS templates to JavaScript on the fly.",
   "main": "lib/index.js",
   "scripts": {
