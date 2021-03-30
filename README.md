@@ -1,3 +1,5 @@
+![Archived](https://img.shields.io/badge/Current_Status-archived-blue?style=flat)
+
 # karma-ng-jade2module-preprocessor
 
 > Preprocessor for converting Jade template files to [AngularJS](http://angularjs.org/) templates.
